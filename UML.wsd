@@ -1,0 +1,77 @@
+@startuml UML
++abstract class Matrix {
+    #RREFStatus rREFStatus;
+
+    +{abstract} int getNumRows()
+    +{abstract} int getNumCols()
+    +{abstract} Fraction[] getRow(int rowNum)
+    +{abstract} Fraction[] getCol(int colNum)
+    +boolean isVector()
+    +{static} isREF(Matrix m)
+    +{static} isRREF(Matrix m)
+
+    +{abstract} swap(int row1, int row2)
+    +{abstract} multiplyRow(Fraction c, int row)
+    +{abstract} multiplyRow(long c, int row)
+    +{abstract} addRow(int dest, Fraction c, int src)
+    +{abstract} addRow(int dest, long c, int src)
+    +{abstract} REF()
+    +{abstract} RREF()
+}
++class CMatrix {
+    -Fraction[][] elems
+
+    +CMatrix(Fraction[][] m)
+}
+Matrix <|-- AMatrix : extends Matrix
+Matrix <|-- CMatrix : extends Matrix
++class AMatrix {
+    -CMatrix left
+    -CMatrix right
+
+    +CMatrix(Fraction[][] left, Fraction[][] right)
+}
+enum RREFStatus {
+    NONE
+    REF
+    RREF
+}
+
++class Fraction {
+    'numerator
+    -long numer
+    -long denom
+    +Fraction(long numer, long denom)
+    +Fraction(long num)
+
+
+    +long getNumer()
+    +long getDenom()
+    +boolean isWhole()
+    'only if it can be an int
+    +int toInt()
+    +long toLong()
+
+    +String toString()
+    -boolean isSimplified()
+    -void simplify()
+    'Fraction += long
+    +void peq(long num)
+    +void peq(Fraction otherFrac)
+    +void meq(long num)
+    +void meq(Fraction otherFrac)
+    'Fraction *= long
+    +void teq(long num)
+    +void teq(Fraction otherFrac)
+    'Fraction /= long
+    +void deq(long num)
+    +void deq(Fraction otherFrac)
+
+    +{static} Fraction toFraction(long num)
+}
++class HelperMethods {
+    +{static} Collection<Long> getFactors(long num)
+    +{static} Collection<Long> getFactorsExcept1(long num)
+}
+
+@enduml
