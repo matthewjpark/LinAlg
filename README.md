@@ -1,2 +1,2 @@
 # LinAlg
-Calculator for Linear Algebra
+Calculator for Linear Algebra. UNFINISHED.
