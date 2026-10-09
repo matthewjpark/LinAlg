@@ -29,6 +29,15 @@ public class Fraction {
     public boolean isWhole() {
         return isWhole;
     }
+    /**
+     * See return. Also handles the case where the fraction is not simplified.
+     * @return {@code true} if the fraction is negative, or {@code false} if the fraction is 0 or positive
+     */
+    public final boolean isNegative() {
+        boolean numIsNegative = (numer < 0) ? true : false;
+        boolean denomIsNegative = (denom < 0) ? true : false;
+        return numIsNegative ^ denomIsNegative;
+    }
 
     public long toLong() {
         if (!isWhole()) {
@@ -94,12 +103,25 @@ public class Fraction {
         denom /= gcd;
         assert(Utils.gcd(numer, denom) == 1);
         isWhole = (denom == 1) ? true : false;
+        fixSign();
         setLength();
     }
     //Set the length based on its actual length
     protected final void setLength()
     {
         length = this.toString().length();
+    }
+
+    /**
+     * If the fraction is negative, makes sure the negative sign is on the numerator
+     */
+    private void fixSign()
+    {
+        if (isNegative() && (denom < 0))
+        {
+            numer *= -1;
+            denom *= -1;
+        }
     }
 
     public void peq(long num) {
@@ -175,10 +197,17 @@ public class Fraction {
         return new Fraction(num, 1);
     }
     /**
-     * Swap the sign of this fraction (i.e. multiply it by -1)
+     * Return a {@code Fraction} that represents the swapped sign of this fraction (i.e. -5/3 becomes 5/3)
      */
-    public void swapSign()
+    public Fraction swapedSign()
     {
-        numer *= -1;
+        return new Fraction(-numer, denom);
+    }
+    /**
+     * @return A new fraction which is the absolute value of this fraction. Doesn't change the value of this fraction.
+     */
+    public Fraction absOf()
+    {
+        return new Fraction(Math.abs(numer), Math.abs(denom));
     }
 }

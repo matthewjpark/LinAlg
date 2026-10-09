@@ -10,17 +10,19 @@ public abstract class Matrix {
     public abstract int getNumCols();
     public abstract Fraction[] getRow(int rowNum);
     public abstract Fraction[] getCol(int colNum);
-    public static final char OPEN_BRACKET_TOP = '┌';
-    public static final char OPEN_BRACKET_MID = '│';
-    public static final char OPEN_BRACKET_BOT = '└';
-    public static final char OPEN_BRACKET_1_ROW = '[';
-    public static final char CLOSE_BRACKET_TOP = '┐';
-    public static final char CLOSE_BRACKET_MID = OPEN_BRACKET_MID;
-    public static final char CLOSE_BRACKET_BOT = '┘';
-    public static final char CLOSE_BRACKET_1_ROW = ']';
-    public static final char SEP = OPEN_BRACKET_MID;
-    public static final char RHO = 'ρ';
-    public static final char LEFT_ARROW = '←';
+    public static final String OPEN_BRACKET_TOP = "┌";
+    public static final String OPEN_BRACKET_MID = "│";
+    public static final String OPEN_BRACKET_BOT = "└";
+    public static final String OPEN_BRACKET_1_ROW = "[";
+    public static final String CLOSE_BRACKET_TOP = "┐";
+    public static final String CLOSE_BRACKET_MID = OPEN_BRACKET_MID;
+    public static final String CLOSE_BRACKET_BOT = "┘";
+    public static final String CLOSE_BRACKET_1_ROW = "]";
+    public static final String SEP = OPEN_BRACKET_MID;
+    public static final String RHO = "ρ";
+    public static final String LEFT_ARROW = "←";
+    public static final String ROW_LOG_OPEN_BRACKET = "[";
+    public static final String ROW_LOG_CLOSE_BRACKET = "]";
     private static final HashMap<Character, Character> subscriptMap = new HashMap<Character, Character>(Map.of(
         '0', '₀',
         '1', '₁',
@@ -33,11 +35,6 @@ public abstract class Matrix {
         '8', '₈',
         '9', '₉'
     ));
-
-    static {
-
-    }
-
     public boolean isVector() {
         return false;
     }
@@ -49,23 +46,72 @@ public abstract class Matrix {
     public static boolean isRREF(Matrix m) {
         return false;
     }
+    /**
+     * Treat these as private methods
+     * @param row1
+     * @param row2
+     */
+    // protected abstract void sw(int row1, int row2);
+    // protected abstract void multiR(Fraction c, int row);
+    protected abstract void addR(int dest, Fraction c, int src);
+//TODO implement these
+    // public final void swap(int row1, int row2);
+    // public final void multiplyRow(Fraction c, int row);
+    // public final void multiplyRow(long c, int row);
+    /**
+     * @param dest the row number of the destination
+     * @param c the multiple of the source row you want to multiply by
+     * @param src the row number you want to add to
+     */
+    public final void addRow(int dest, Fraction c, int src)
+    {
+        addR(dest, c, src);
+        final String destRowStr = getRho(dest);//string that represents the destination row and rho symbol
+        StringBuilder rowOp = new StringBuilder(destRowStr);
+        rowOp.append(LEFT_ARROW);
+        rowOp.append(destRowStr);
+        boolean cIsNeg = c.isNegative();//if it's negative, 
+        boolean cIsWhole = c.isWhole();//if it's not whole, use parenthesis
+        //whole --> no parenthesis; not whole --> parenthesis
+        //negative --> - instead of +
+        //positive --> +
+        if (cIsNeg)
+        {
+            rowOp.append('-');
+        } else {
+            rowOp.append('+');
+        }
+        Fraction abC = c.absOf();//absolute value of C
+        String abCStr = abC.toString();
+        if (cIsWhole)
+        {
+            rowOp.append(abCStr);
+        } else {
+            rowOp.append('(' + abCStr + ')');
+        }
+        rowOp.append(getRho(src));
 
-    public abstract void swap(int row1, int row2);
-    public abstract void multiplyRow(Fraction c, int row);
-    public abstract void multiplyRow(long c, int row);
-    public abstract void addRow(int dest, Fraction c, int src);
-    public abstract void addRow(int dest, long c, int src);
+
+
+        //addToRowOpLog(destRowStr + LEFT_ARROW + destRowStr + "+(" + c.toString() + ")");
+    }
+    public final void addRow(int dest, long c, int src)
+    {
+        addRow(dest, new Fraction(c), src);
+    }
     public abstract void REF();
     public abstract void RREF();
 
+
+
     //=====Row op log methods=====
     /**
-     * Adds the operation in plain text to the row op log
-     * @param operation
+     * Adds the operation in plain text to the row op log.
+     * @param operation the operation, not including [].
      */
     protected void addToRowOpLog(String operation)
     {
-        rowOpLog.add(operation);
+        rowOpLog.add(ROW_LOG_OPEN_BRACKET + operation + ROW_LOG_CLOSE_BRACKET);
     }
     public void printRowOpLog()
     {
@@ -85,11 +131,11 @@ public abstract class Matrix {
      * @return
      * @throws IllegalArgumentException when the row is not in the matrix
      */
-    protected char getOpeningCharacter(int row)
+    protected String getOpeningCharacter(int row)
     {
         return getEdgeCharacter(row, OPEN_BRACKET_TOP, OPEN_BRACKET_MID, OPEN_BRACKET_BOT, OPEN_BRACKET_1_ROW);
     }
-    protected char getClosingCharacter(int row)
+    protected String getClosingCharacter(int row)
     {
         return getEdgeCharacter(row, CLOSE_BRACKET_TOP, CLOSE_BRACKET_MID, CLOSE_BRACKET_BOT, CLOSE_BRACKET_1_ROW);
     }
@@ -103,7 +149,7 @@ public abstract class Matrix {
      * @param sing the character to use if the matrix only has 1 row
      * @return
      */
-    private char getEdgeCharacter(int row, final char top, final char mid, final char bot, final char sing)
+    private String getEdgeCharacter(int row, final String top, final String mid, final String bot, final String sing)
     {
         if (row >= getNumRows() || row < 0)
         {throw new IndexOutOfBoundsException("Specified row does not exist");}
@@ -127,6 +173,22 @@ public abstract class Matrix {
     {
         return subscriptMap.get((char)(input + '0'));
     }
+    /**
+     * @param row a row number
+     * @return a string that is the rho character + the row # as a subscript
+     */
+    public static String getRho(int row)
+    {
+        return RHO + toSubscript(row);
+    }
+    //=====Indexing methods=====
+    /**
+     * Convert a zero-indexed index to a one-indexed index
+     * @return
+     */
+    public static int cToH(int cInd)
+    {   return ++cInd;  }
+    public static 
 
     /**
      * Makes sure the 2d array is a rectangular array and at least 1x1

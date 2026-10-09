@@ -1,6 +1,10 @@
 public class CMatrix extends Matrix {
     private Fraction[][] elems;
 
+    /**
+     * Initialize a {@code CMatrix} using the default indexing mode
+     * @param m
+     */
     public CMatrix(Fraction[][] m) {
         Matrix.ensureRectangularArray(m);
         elems = m;
@@ -31,47 +35,38 @@ public class CMatrix extends Matrix {
         return returnArr;
     }
 
-    @Override
-    public void swap(int row1, int row2) {
-        Fraction[] temp = elems[row1];
-        elems[row1] = elems[row2];
-        elems[row2] = temp;
-    }
+    //TODO implement these
+    // @Override
+    // public void swap(int row1, int row2) {
+    //     Fraction[] temp = elems[row1];
+    //     elems[row1] = elems[row2];
+    //     elems[row2] = temp;
+    // }
 
-    @Override
-    public void multiplyRow(Fraction c, int row) {
-        for (Fraction frac : elems[row])
-        {
-            frac.teq(c);
-        }
-    }
+    // @Override
+    // public void multiplyRow(Fraction c, int row) {
+    //     for (Fraction frac : elems[row])
+    //     {
+    //         frac.teq(c);
+    //     }
+    // }
 
-    @Override
-    public void multiplyRow(long c, int row) {
-        for (Fraction frac : elems[row])
-        {
-            frac.teq(c);
-        }
-    }
+    // @Override
+    // public void multiplyRow(long c, int row) {
+    //     for (Fraction frac : elems[row])
+    //     {
+    //         frac.teq(c);
+    //     }
+    // }
 
-    
+
     /**
-     * @param dest the row number of the destination
-     * @param c the multiple of the source row you want to multiply by
-     * @param src the row number you want to add to
+     * Internal add row method
+     * @param dest
+     * @param c
+     * @param src
      */
-    @Override
-    public void addRow(int dest, Fraction c, int src) {
-        addR(dest, c, src);
-        addToRowOpLog(RHO + );
-    }
-
-    @Override
-    public void addRow(int dest, long c, int src) {
-        addR(dest, Fraction.toFraction(c), src);
-    }
-
-    private void addR(int dest, Fraction c, int src) {
+    protected void addR(int dest, Fraction c, int src) {
         for (int col = 0; col < getNumCols(); col++) {
             Fraction scaledFraction = Fraction.multiply(elems[src][col], c);
             Fraction destF = elems[dest][col];
