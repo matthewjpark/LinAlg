@@ -1,3 +1,4 @@
+import java.util.regex.Pattern;
 
 public class Tester {
 
@@ -14,10 +15,10 @@ public class Tester {
         // Fraction f5 = new Fraction(5);
         // Fraction f6 = new Fraction(6);
         // CMatrix m = new CMatrix(new Fraction[][] {{f1, f2, f3}, {f4, f5, f6}});
-        // System.out.println(m.toString());
-        // m.addRow(1, 2, 2);
-        // System.out.println(m.toString());
-        System.out.println(Matrix.cToH(0));
+        // m.printOpNMatrix();
+        // m.addRow(1, new Fraction(1, -100), 0);
+        // m.printOpNMatrix();
+        Pattern row = Pattern.compile(null)
     }
     
 

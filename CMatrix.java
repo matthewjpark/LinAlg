@@ -10,6 +10,7 @@ public class CMatrix extends Matrix {
         elems = m;
     }
 
+    //=====Getter methods=====
     @Override
     public int getNumRows() {
         return elems.length;
@@ -35,21 +36,20 @@ public class CMatrix extends Matrix {
         return returnArr;
     }
 
+    //=====Row Operation methods=====
     //TODO implement these
-    // @Override
-    // public void swap(int row1, int row2) {
-    //     Fraction[] temp = elems[row1];
-    //     elems[row1] = elems[row2];
-    //     elems[row2] = temp;
-    // }
+    public void sw(int row1, int row2) {
+        Fraction[] temp = elems[row1];
+        elems[row1] = elems[row2];
+        elems[row2] = temp;
+    }
 
-    // @Override
-    // public void multiplyRow(Fraction c, int row) {
-    //     for (Fraction frac : elems[row])
-    //     {
-    //         frac.teq(c);
-    //     }
-    // }
+    public void multR(Fraction c, int row) {
+        for (Fraction frac : elems[row])
+        {
+            frac.teq(c);
+        }
+    }
 
     // @Override
     // public void multiplyRow(long c, int row) {
@@ -83,7 +83,8 @@ public class CMatrix extends Matrix {
     public void RREF() {
         throw new UnsupportedOperationException();
     }
-
+    //=====String methods=====
+    @Override
     public String toString()
     {
         int colLengths[] = getColLengths();
@@ -118,6 +119,7 @@ public class CMatrix extends Matrix {
         return returnStr;
     }
 
+    //=====Other Methods=====
     //TODO Improve the complexity of this later using a heap
     /**
      * 

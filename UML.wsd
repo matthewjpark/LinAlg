@@ -47,7 +47,7 @@ enum RREFStatus {
 
     +long getNumer()
     +long getDenom()
-    +boolean isWhole()
+    +boolean isInt()
     'only if it can be an int
     +int toInt()
     +long toLong()

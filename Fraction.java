@@ -1,7 +1,7 @@
 public class Fraction {
     protected long numer;
     private long denom;
-    private boolean isWhole;
+    private boolean isInt;
     protected int length;
 
     public Fraction(long numer, long denom) {
@@ -26,8 +26,8 @@ public class Fraction {
         return denom;
     }
 
-    public boolean isWhole() {
-        return isWhole;
+    public boolean isInt() {
+        return isInt;
     }
     /**
      * See return. Also handles the case where the fraction is not simplified.
@@ -40,7 +40,7 @@ public class Fraction {
     }
 
     public long toLong() {
-        if (!isWhole()) {
+        if (!isInt()) {
             throw new IllegalStateException("Tried to convert a non-whole fraction into an int");
         }
         return numer;
@@ -52,13 +52,37 @@ public class Fraction {
 
     @Override
     public final String toString() {
-        if (isWhole)
+        if (isInt)
         {
             return "" + numer;
         } else {
             return numer + "/" + denom;
         }
         
+    }
+    /**
+     * If the fraction is exactly 1 or -1, omit the 1 part
+     * @return
+     */
+    public String toStringOmit1() {
+        if (isInt) {
+            if (toLong() == 1) {return "";}
+            else if (toLong() == -1) {return "-";}
+            else {return toString();}
+        } else {
+            return toString();
+        }
+    }
+    /**
+     * Enclose the fraction in parenthesis if it's not an int
+     * @return
+     */
+    public String toStringParenthesis() {
+        if (isInt) {
+            return toString();
+        } else {
+            return '(' + toString() + ')';
+        }
     }
 
     /**
@@ -102,8 +126,8 @@ public class Fraction {
         numer /= gcd;
         denom /= gcd;
         assert(Utils.gcd(numer, denom) == 1);
-        isWhole = (denom == 1) ? true : false;
         fixSign();
+        isInt = (denom == 1) ? true : false;
         setLength();
     }
     //Set the length based on its actual length
@@ -206,7 +230,7 @@ public class Fraction {
     /**
      * @return A new fraction which is the absolute value of this fraction. Doesn't change the value of this fraction.
      */
-    public Fraction absOf()
+    public Fraction abs()
     {
         return new Fraction(Math.abs(numer), Math.abs(denom));
     }
