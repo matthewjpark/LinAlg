@@ -1,3 +1,6 @@
+import java.util.InputMismatchException;
+import java.util.regex.Pattern;
+
 public class Fraction {
     protected long numer;
     private long denom;
@@ -16,6 +19,42 @@ public class Fraction {
 
     public Fraction(long num) {
         this(num, 1);
+    }
+
+    /**
+     * Makes a fraction based off a string. Fraction may include parenthesis. Defaults to 1 when the string is empty. (Also defaults to -1 when the input string is just a negative sign)
+     * @param input
+     * @throws NumberFormatException when the numerator/denominator is not a number
+     * @throws InputMismatchException when there is more than 1 fraction bar
+     */
+    public Fraction(String input) {
+        String cleanedInput = input.replaceAll("[\\(\\)]", "");//remove extra parenthesis
+        long numer;
+        long denom;
+        if (input.equals(""))
+        {
+            numer = 1;
+            denom = 1;
+        } else if (input.equals("-")) {
+            numer = -1;
+            denom = 1;
+        } else {
+            Pattern fracBarPat = Pattern.compile("/");
+            String[] nums = fracBarPat.split(cleanedInput);//index 0 holds the numerator, index 1 holds the denominator
+            numer = Long.parseLong(nums[0]);
+            switch (nums.length)
+            {
+                case 1:
+                    denom = 1;
+                    break;
+                case 2:
+                    denom = Long.parseLong(nums[1]);
+                    break;
+                default:
+                    throw new InputMismatchException("Multiple fraction bars detected");
+            }
+        }
+        this(numer, denom);
     }
 
     public long getNumer() {

@@ -26,6 +26,7 @@ public abstract class Matrix {
     public static final String DOUBLE_ARROW = " ⟷ ";
     public static final String ROW_LOG_OPEN_BRACKET = "[";
     public static final String ROW_LOG_CLOSE_BRACKET = "]";
+    public static final boolean ONE_INDEXED = true;
     private static final HashMap<Character, Character> subscriptMap = new HashMap<Character, Character>(Map.of(
         '0', '₀',
         '1', '₁',
@@ -248,7 +249,8 @@ public abstract class Matrix {
      */
     public static String getRho(int row)
     {
-        return RHO + toSubscript(++row);
+        if (ONE_INDEXED) {row++;}
+        return RHO + toSubscript(row);
     }
     /**
      * Print the most recent row operation and then the matrix

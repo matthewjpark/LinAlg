@@ -8,17 +8,38 @@ public class Tester {
         System.out.println(f.toString());
     }
     public static void main(String[] args) {
-        // Fraction f1 = new Fraction(1);
-        // Fraction f2 = new Fraction(2);
-        // Fraction f3 = new Fraction(3);
-        // Fraction f4 = new Fraction(4);
-        // Fraction f5 = new Fraction(5);
-        // Fraction f6 = new Fraction(6);
-        // CMatrix m = new CMatrix(new Fraction[][] {{f1, f2, f3}, {f4, f5, f6}});
-        // m.printOpNMatrix();
-        // m.addRow(1, new Fraction(1, -100), 0);
-        // m.printOpNMatrix();
-        Pattern row = Pattern.compile(null)
+        Fraction f1 = new Fraction(1);
+        Fraction f2 = new Fraction(2);
+        Fraction f3 = new Fraction(3);
+        Fraction f4 = new Fraction(4);
+        Fraction f5 = new Fraction(5);
+        Fraction f6 = new Fraction(6);
+        CMatrix m = new CMatrix(new Fraction[][] {{f1, f2, f3}, {f4, f5, f6}});
+        RowOpInterpreter mI = new RowOpInterpreter(m);
+        mI.parse("p1 p2");
+        m.printOpNMatrix();
+        mI.parse("p1+=p2");
+        m.printOpNMatrix();
+        mI.parse("p1-=p2");
+        m.printOpNMatrix();
+        mI.parse("p1-=p2");
+        m.printOpNMatrix();
+        mI.parse("p1-=4p2");
+        m.printOpNMatrix();
+        mI.parse("p1+=2p2");
+        m.printOpNMatrix();
+        mI.parse("p1+=(2/3)p2");
+        m.printOpNMatrix();
+        mI.parse("p1-=(-2/-3)p2");
+        m.printOpNMatrix();
+        mI.parse("p1*=+2");
+        m.printOpNMatrix();
+        mI.parse("p1/=2");
+        m.printOpNMatrix();
+        mI.parse("p2*=-(1/10)");
+        m.printOpNMatrix();
+        mI.parse("p2*=(-1/10)");
+        m.printOpNMatrix();
     }
     
 

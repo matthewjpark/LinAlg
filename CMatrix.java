@@ -37,13 +37,19 @@ public class CMatrix extends Matrix {
     }
 
     //=====Row Operation methods=====
-    //TODO implement these
+    /**
+     * Internal swap row method
+     */
     public void sw(int row1, int row2) {
         Fraction[] temp = elems[row1];
         elems[row1] = elems[row2];
         elems[row2] = temp;
     }
 
+    /**    (non-Javadoc)
+     * Internal multiply row method
+     * @see Matrix#multR(Fraction, int)
+     */
     public void multR(Fraction c, int row) {
         for (Fraction frac : elems[row])
         {
