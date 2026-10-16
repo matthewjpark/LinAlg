@@ -1,3 +1,8 @@
+/**
+ * Augmented matrix class.
+ * @author Matthew Park
+ * @version v1
+ */
 public class AMatrix extends Matrix {
     private Fraction[][] left;
     private Fraction[][] right;
@@ -97,6 +102,7 @@ public class AMatrix extends Matrix {
     public String toString()
     {
         int colLengths[] = getColLengths();
+        //TODO handle the case where the matrix is 1 row
         int finalStringLength = Matrix.OPEN_BRACKET_TOP.length() + Matrix.CLOSE_BRACKET_TOP.length() + Matrix.SEP.length() + 1;//opening bracket, closing bracket, newline, line separator
         for (int num : colLengths)
         {

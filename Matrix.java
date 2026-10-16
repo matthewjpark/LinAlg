@@ -3,6 +3,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+/**
+ * An abstract matrix class which contains (the headers for) methods necessary for elementary row ops, printing, and RREF
+ * @author Matthew Park
+ * @version v1
+ */
 public abstract class Matrix {
     protected RREFStatus rREFStatus;
     private ArrayList<String> rowOpLog = new ArrayList<String>();
@@ -45,26 +50,54 @@ public abstract class Matrix {
         assert(CLOSE_BRACKET_TOP.length() == CLOSE_BRACKET_MID.length());
         assert(CLOSE_BRACKET_MID.length() == CLOSE_BRACKET_BOT.length());
     }
-    public boolean isVector() {
-        return false;
-    }
 
+    /**
+     * Is the {@code Matrix m} in REF form?
+     * @param m
+     * @return
+     * @throws UnsupportedOperationException always because the method hasn't been implemented yet
+     */
     public static boolean isREF(Matrix m) {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
+    /**
+     * Is the {@code Matrix m} in RREF form?
+     * @param m
+     * @return
+     * @throws UnsupportedOperationException always because the method hasn't been implemented yet
+     */
     public static boolean isRREF(Matrix m) {
-        return false;
+        throw new UnsupportedOperationException();
     }
     //=====Row Op methods=====
     /**
-     * Treat these as private methods
+     * Internal swap row method.
+     * Treat as private methods (don't call outside of Matrix or its subclasses)
      * @param row1
      * @param row2
      */
     protected abstract void sw(int row1, int row2);
+    /**
+     * Internal multiply row method.
+     * Treat as private methods (don't call outside of Matrix or its subclasses)
+     * @param c
+     * @param row
+     */
     protected abstract void multR(Fraction c, int row);
+    /**
+     * Internal add row method.
+     * Treat as private methods (don't call outside of Matrix or its subclasses)
+     * @param dest
+     * @param c
+     * @param src
+     */
     protected abstract void addR(int dest, Fraction c, int src);
+    /**
+     * Swap two rows and add it to the row op log.
+     * @param row1 zero-indexed row number
+     * @param row2
+     */
     public final void swap(int row1, int row2)
     {
         if ((row1 == row2) && STRICT_ROW_OPS)
@@ -80,6 +113,11 @@ public abstract class Matrix {
         rowOp.append(r2Str);
         addToRowOpLog(rowOp);
     }
+    /**
+     * Multiply a row by a constant {@code Fraction} and add it to the row op log
+     * @param c
+     * @param row zero-indexed row number
+     */
     public final void multiplyRow(Fraction c, int row)
     {
         if ((c.numer == 0) && STRICT_ROW_OPS) {throw new ArithmeticException("Cannot multiply row by 0");}
@@ -118,11 +156,18 @@ public abstract class Matrix {
         }
         addToRowOpLog(rowOp);
     }
+    /**
+     * 
+     * @param c
+     * @param row
+     * @throws UnsupportedOperationException always because this method hasn't been implemented yet
+     */
     public final void multiplyRow(long c, int row)
     {
         throw new UnsupportedOperationException();
     }
     /**
+     * Add a multiple of one row to another and add the operation to the row op log
      * @param dest the zero-indexed row number of the destination
      * @param c the zero-indexed multiple of the source row you want to multiply by
      * @param src the zero-indexed row number you want to add to
@@ -178,6 +223,9 @@ public abstract class Matrix {
         operation.append(ROW_LOG_CLOSE_BRACKET);
         rowOpLog.add(operation.toString());
     }
+    /**
+     * Print the row op log to the console
+     */
     public void printRowOpLog()
     {
         for (String entry : rowOpLog)
@@ -210,6 +258,12 @@ public abstract class Matrix {
     {
         return getEdgeCharacter(row, OPEN_BRACKET_TOP, OPEN_BRACKET_MID, OPEN_BRACKET_BOT, OPEN_BRACKET_1_ROW);
     }
+    /**
+     * 
+     * @param row
+     * @return
+     * @see getOpeningCharacter
+     */
     protected String getClosingCharacter(int row)
     {
         return getEdgeCharacter(row, CLOSE_BRACKET_TOP, CLOSE_BRACKET_MID, CLOSE_BRACKET_BOT, CLOSE_BRACKET_1_ROW);
@@ -240,10 +294,22 @@ public abstract class Matrix {
         else
         {return mid;}
     }
+    /**
+     * 
+     * @param input a numeric character 0-9
+     * @return the subscript representation of {@code input} as a {@code char}
+     */
     public static char toSubscript(char input)
     {
         return subscriptMap.get(input);
     }
+    /**
+     * 
+     * @param input
+     * @return
+     * @throws NullPointerException when the input is invalid
+     * @see toSubscript
+     */
     public static char toSubscript(long input)//test for invalid inputs
     {
         return subscriptMap.get((char)(input + '0'));
@@ -269,7 +335,7 @@ public abstract class Matrix {
     }
     //==Helper methods=====
     /**
-     * Makes sure the 2d array is a rectangular array and at least 1x1
+     * Makes sure the 2d array is a rectangular array and at least 1x1. Throws an exception if it isn't.
      * @param arr
      * @throws IllegalArgumentException when it's not a rectangular array
      * @throws IndexOutOfBoundsException when the array is null (double chek if this is the case)

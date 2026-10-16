@@ -1,12 +1,24 @@
 import java.util.InputMismatchException;
 import java.util.regex.Pattern;
 
+/**
+ * Fraction class which allows for computations of rational numbers without having to worry about floating point rounding errors.
+ * Keeps infinite precision as long as the numerator and denominator fall within the 64-bit {@code long} limit.
+ * @author Matthew Park
+ * @version v1 
+ */
 public class Fraction {
     protected long numer;
     private long denom;
     private boolean isInt;
     protected int length;
 
+    /**
+     * Create a {@code Fraction} with a specified numerator and denominator. Fraction will be simplified upon creation.
+     * @param numer the numerator
+     * @param denom the denominator
+     * @throws ArithmeticException when the denominator is 0
+     */
     public Fraction(long numer, long denom) {
         if (denom == 0) {
             throw new ArithmeticException("Denominator can't be 0");
@@ -17,13 +29,18 @@ public class Fraction {
 
     }
 
+    /**
+     * Create a {@code Fraction} with a specified numerator. The denominator will be 0, so the {@code Fraction} will be a whole number.
+     * @param num
+     */
     public Fraction(long num) {
         this(num, 1);
+        correctState();
     }
 
     /**
      * Makes a fraction based off a string. Fraction may include parenthesis. Defaults to 1 when the string is empty. (Also defaults to -1 when the input string is just a negative sign)
-     * @param input
+     * @param input the input string to parse
      * @throws NumberFormatException when the numerator/denominator is not a number
      * @throws InputMismatchException when there is more than 1 fraction bar
      */
@@ -57,6 +74,10 @@ public class Fraction {
         this(numer, denom);
     }
 
+    /**
+     * Get the numerator of the fraction.
+     * @return
+     */
     public long getNumer() {
         return numer;
     }
@@ -69,7 +90,7 @@ public class Fraction {
         return isInt;
     }
     /**
-     * See return. Also handles the case where the fraction is not simplified.
+     * Self-explanatory. Also works if the fraction is not simplified.
      * @return {@code true} if the fraction is negative, or {@code false} if the fraction is 0 or positive
      */
     public final boolean isNegative() {
@@ -78,12 +99,18 @@ public class Fraction {
         return numIsNegative ^ denomIsNegative;
     }
 
+    /**
+     * Converts a fraction to a {@code long}
+     * @return
+     * @throws IllegalStateException when {@code this} ∉ ℤ
+     */
     public long toLong() {
         if (!isInt()) {
-            throw new IllegalStateException("Tried to convert a non-whole fraction into an int");
+            throw new IllegalStateException("Tried to convert a non-whole fraction into an long");
         }
         return numer;
     }
+
 
     public double toDouble() {
         return numer / denom;
@@ -100,7 +127,8 @@ public class Fraction {
         
     }
     /**
-     * If the fraction is exactly 1 or -1, omit the 1 part
+     * Like the {@code toString}, but
+     * if the fraction is exactly 1 or -1, omit the 1 part
      * @return
      */
     public String toStringOmit1() {
@@ -113,7 +141,8 @@ public class Fraction {
         }
     }
     /**
-     * Enclose the fraction in parenthesis if it's not an int
+     * Like the {@code toString}, but
+     * enclose the fraction in parenthesis if it's not an int
      * @return
      */
     public String toStringParenthesis() {
@@ -128,7 +157,7 @@ public class Fraction {
      * Like toString, but aligns it in the center using exactly the specified width.
      * If the padding is uneven, the string will be slightly to the left.
      * @param width the length of the returned string
-     * @return the string
+     * @return
      */
     public String toCenterString(int width)
     {
@@ -166,6 +195,12 @@ public class Fraction {
         denom /= gcd;
         assert(Utils.gcd(numer, denom) == 1);
         fixSign();
+        correctState();
+    }
+    /**
+     * Correct the state. Fractions that aren't whole numbers need to use the simplify() method instead.
+     */
+    private void correctState() {
         isInt = (denom == 1) ? true : false;
         setLength();
     }
@@ -187,22 +222,42 @@ public class Fraction {
         }
     }
 
+    /**
+     * Set {@code this} to be {@code this} + {@code num}.
+     * In other words, {@code this} += {@code num}
+     * @param num
+     */
     public void peq(long num) {
         numer += num * denom;
         simplify();
     }
 
+    /**
+     * Set {@code this} to be {@code this} + {@code otherFrac}.
+     * In other words, {@code this} += {@code otherFrac}
+     * @param otherFrac
+     */
     public void peq(Fraction otherFrac) {
         numer = (numer)*(otherFrac.denom) + (denom)*(otherFrac.numer);
         denom *= otherFrac.denom;
         simplify();
     }
 
+    /**
+     * Set {@code this} to be {@code this} - {@code num}.
+     * In other words, {@code this} -= {@code num}
+     * @param num
+     */
     public void meq(long num) {
         numer -= num * denom;
         simplify();
     }
-
+    //TODO see javadoc behavior, and finish teq and deq method documentation
+    /**
+     * 
+     * @param otherFrac
+     * @see meq
+     */
     public void meq(Fraction otherFrac) {
         numer = (numer)*(otherFrac.denom) - (denom)*(otherFrac.numer);
         denom *= otherFrac.denom;
@@ -256,11 +311,17 @@ public class Fraction {
         return new Fraction(newNumer, f1.denom);
     }
 
+    /**
+     * Another way of constructing a {@code Fraction}
+     * @param num
+     * @return
+     */
     public static Fraction toFraction(long num) {
         return new Fraction(num, 1);
     }
     /**
-     * Return a {@code Fraction} that represents the swapped sign of this fraction (i.e. -5/3 becomes 5/3)
+     * Return a {@code Fraction} that represents the swapped sign of this fraction (i.e. -5/3 becomes 5/3).
+     * Doesn't change the value of {@code this}.
      */
     public Fraction swapedSign()
     {

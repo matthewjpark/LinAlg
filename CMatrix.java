@@ -1,3 +1,8 @@
+/**
+ * Coefficient Matrix class
+ * @author Matthew Park
+ * @version 1
+ */
 public class CMatrix extends Matrix {
     private Fraction[][] elems;
 
@@ -37,10 +42,11 @@ public class CMatrix extends Matrix {
     }
 
     //=====Row Operation methods=====
-    /**
+    /**    (non-Javadoc)
      * Internal swap row method
+     * @see Matrix#sw(int, int)
      */
-    public void sw(int row1, int row2) {
+    protected void sw(int row1, int row2) {
         Fraction[] temp = elems[row1];
         elems[row1] = elems[row2];
         elems[row2] = temp;
@@ -50,27 +56,16 @@ public class CMatrix extends Matrix {
      * Internal multiply row method
      * @see Matrix#multR(Fraction, int)
      */
-    public void multR(Fraction c, int row) {
+    protected void multR(Fraction c, int row) {
         for (Fraction frac : elems[row])
         {
             frac.teq(c);
         }
     }
 
-    // @Override
-    // public void multiplyRow(long c, int row) {
-    //     for (Fraction frac : elems[row])
-    //     {
-    //         frac.teq(c);
-    //     }
-    // }
-
-
-    /**
+    /**    (non-Javadoc)
      * Internal add row method
-     * @param dest
-     * @param c
-     * @param src
+     * @see Matrix#addR(int, Fraction, int)
      */
     protected void addR(int dest, Fraction c, int src) {
         for (int col = 0; col < getNumCols(); col++) {

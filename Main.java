@@ -3,6 +3,9 @@ import java.util.Scanner;
 public class Main {
     public static Matrix m;
     public static Scanner scnr = new Scanner(System.in);
+    /**
+     * Create a {@code Matrix} using an interactive {@code Scanner} interface
+     */
     public static void createMatrix() {
         String type;
         do {
