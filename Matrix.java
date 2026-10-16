@@ -16,21 +16,25 @@ public abstract class Matrix {
     public abstract int getNumCols();
     public abstract Fraction[] getRow(int rowNum);
     public abstract Fraction[] getCol(int colNum);
-    public static final boolean STRICT_ROW_OPS = true;//whether row operations that do nothing (eg. swapping the same row) are forbidden
-    public static final String OPEN_BRACKET_TOP = "┌";
-    public static final String OPEN_BRACKET_MID = "│";
-    public static final String OPEN_BRACKET_BOT = "└";
-    public static final String OPEN_BRACKET_1_ROW = "[";
-    public static final String CLOSE_BRACKET_TOP = "┐";
-    public static final String CLOSE_BRACKET_MID = OPEN_BRACKET_MID;
-    public static final String CLOSE_BRACKET_BOT = "┘";
-    public static final String CLOSE_BRACKET_1_ROW = "]";
-    public static final String SEP = OPEN_BRACKET_MID;
-    public static final String RHO = "ρ";
+    //TODO see javadoc behavior
+    /**
+     * whether row operations that do nothing (eg. swapping the same row) are forbidden
+     */
+    public static final boolean STRICT_ROW_OPS = true;
+    /** Opening bracket symbol at the top when the matrix has multiple rows */ public static final String OPEN_BRACKET_TOP = "┌";
+    /** Opening bracket symbol at the top when the matrix has multiple rows */ public static final String OPEN_BRACKET_MID = "│";
+    /** Opening bracket symbol at the bottom when the matrix has multiple rows */ public static final String OPEN_BRACKET_BOT = "└";
+    /** Opening bracket symbol when the matrix has 1 row */ public static final String OPEN_BRACKET_1_ROW = "[";
+    /** @see OPEN_BRACKET_TOP */ public static final String CLOSE_BRACKET_TOP = "┐";
+    /** @see OPEN_BRACKET_MID */ public static final String CLOSE_BRACKET_MID = OPEN_BRACKET_MID;
+    /** @see OPEN_BRACKET_BOT */ public static final String CLOSE_BRACKET_BOT = "┘";
+    /** @see OPEN_BRACKET_1_ROW */ public static final String CLOSE_BRACKET_1_ROW = "]";
+    /** Separator character between left and right side of matrix in an {@code AMatrix} */ public static final String SEP = OPEN_BRACKET_MID;
+    /** Greek letter rho symbol */ public static final String RHO = "ρ";
     public static final String LEFT_ARROW = " ← ";
     public static final String DOUBLE_ARROW = " ⟷ ";
-    public static final String ROW_LOG_OPEN_BRACKET = "[";
-    public static final String ROW_LOG_CLOSE_BRACKET = "]";
+    public static final String ROW_LOG_OPEN_BRACKET = OPEN_BRACKET_1_ROW;
+    public static final String ROW_LOG_CLOSE_BRACKET = CLOSE_BRACKET_1_ROW;
     public static final boolean ONE_INDEXED = true;
     private static final HashMap<Character, Character> subscriptMap = new HashMap<Character, Character>(Map.of(
         '0', '₀',

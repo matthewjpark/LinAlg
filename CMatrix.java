@@ -7,7 +7,7 @@ public class CMatrix extends Matrix {
     private Fraction[][] elems;
 
     /**
-     * Initialize a {@code CMatrix} using the default indexing mode
+     * Initialize a {@code CMatrix}
      * @param m
      */
     public CMatrix(Fraction[][] m) {

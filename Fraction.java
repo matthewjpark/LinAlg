@@ -252,7 +252,6 @@ public class Fraction {
         numer -= num * denom;
         simplify();
     }
-    //TODO see javadoc behavior, and finish teq and deq method documentation
     /**
      * 
      * @param otherFrac
@@ -264,22 +263,42 @@ public class Fraction {
         simplify();
     }
 
+    /**
+     * *=
+     * @param num
+     * @see peq
+     */
     public void teq(long num) {
         numer *= num;
         simplify();
     }
 
+    /**
+     * *=
+     * @param otherFrac
+     * @see peq
+     */
     public void teq(Fraction otherFrac) {
         numer *= otherFrac.numer;
         denom *= otherFrac.denom;
         simplify();
     }
 
+    /**
+     * /=
+     * @param num
+     * @see peq
+     */
     public void deq(long num) {
         denom *= num;
         simplify();
     }
 
+    /**
+     * /=
+     * @param otherFrac
+     * @see peq
+     */
     public void deq(Fraction otherFrac) {
         numer *= otherFrac.denom;
         denom *= otherFrac.numer;

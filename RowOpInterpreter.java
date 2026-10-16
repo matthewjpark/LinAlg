@@ -36,7 +36,7 @@ public class RowOpInterpreter {
     /**
      * Parses the input string and performs the corresponding row operation
      * @param s the input string to parse, which uses one-indexed row numbers
-     * @throws ArrayOutOfBoundsException when the regex couldn't be matched
+     * @throws ArrayIndexOutOfBoundsException when the regex couldn't be matched
      * @throws IllegalStateException when you don't specify a destination row
      * @throws NumberFormatException when you use /= and the divisor isn't a number
      */

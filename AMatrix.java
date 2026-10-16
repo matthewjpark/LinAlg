@@ -7,6 +7,11 @@ public class AMatrix extends Matrix {
     private Fraction[][] left;
     private Fraction[][] right;
 
+    /**
+     * Initilize an augmented matrix. This conceptually holds two submatricies separated by a line.
+     * @param left submatrix on the left side
+     * @param right submatrix on the right side
+     */
     public AMatrix(Fraction[][] left, Fraction[][] right) {
         Matrix.ensureRectangularArray(left);
         Matrix.ensureRectangularArray(right);
