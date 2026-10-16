@@ -94,7 +94,8 @@ public class CMatrix extends Matrix {
     public String toString()
     {
         int colLengths[] = getColLengths();
-        int finalStringLength = 1 + 1 + 1;//opening bracket, closing bracket, newline
+        //TODO handle the case where the matrix is one row
+        int finalStringLength = Matrix.OPEN_BRACKET_TOP.length() + Matrix.CLOSE_BRACKET_TOP.length() + 1;//opening bracket, closing bracket, newline.
         for (int num : colLengths)
         {
             finalStringLength += num;

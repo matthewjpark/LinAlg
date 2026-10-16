@@ -39,6 +39,12 @@ public abstract class Matrix {
         '8', '₈',
         '9', '₉'
     ));
+    static {
+        assert(OPEN_BRACKET_TOP.length() == OPEN_BRACKET_MID.length());
+        assert(OPEN_BRACKET_MID.length() == OPEN_BRACKET_BOT.length());
+        assert(CLOSE_BRACKET_TOP.length() == CLOSE_BRACKET_MID.length());
+        assert(CLOSE_BRACKET_MID.length() == CLOSE_BRACKET_BOT.length());
+    }
     public boolean isVector() {
         return false;
     }
@@ -59,7 +65,6 @@ public abstract class Matrix {
     protected abstract void sw(int row1, int row2);
     protected abstract void multR(Fraction c, int row);
     protected abstract void addR(int dest, Fraction c, int src);
-    //TODO implement these
     public final void swap(int row1, int row2)
     {
         if ((row1 == row2) && STRICT_ROW_OPS)
