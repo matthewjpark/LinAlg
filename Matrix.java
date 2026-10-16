@@ -342,11 +342,11 @@ public abstract class Matrix {
      * Makes sure the 2d array is a rectangular array and at least 1x1. Throws an exception if it isn't.
      * @param arr
      * @throws IllegalArgumentException when it's not a rectangular array
-     * @throws IndexOutOfBoundsException when the array is null (double chek if this is the case)
+     * @throws IndexOutOfBoundsException when the array is empty
+     * @throws NullPointerException when the array is null
      */
     public static void ensureRectangularArray(Object[][] arr)
     {
-        if (arr.length == 0) {return;}//an empty array is  valid
         final int rowLength = arr[0].length;
         for (int r = 0; r < arr.length; r++)
         {

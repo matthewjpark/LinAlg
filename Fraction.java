@@ -155,7 +155,7 @@ public class Fraction {
 
     /**
      * Like toString, but aligns it in the center using exactly the specified width.
-     * If the padding is uneven, the string will be slightly to the left.
+     * If the padding is uneven, the extra space will be added to the left.
      * @param width the length of the returned string
      * @return
      */
@@ -167,7 +167,7 @@ public class Fraction {
         int eSR = extraSpaces / 2;
         if (extraSpaces % 2 == 1)
         {
-            eSR++;
+            eSL++;
         }
         assert(eSL + eSR == extraSpaces);
         StringBuilder centerStr = new StringBuilder(width);

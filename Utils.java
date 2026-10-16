@@ -6,6 +6,7 @@ import java.util.Set;
  * Static utility methods. Most methods are for numbers.
  */
 public class Utils {
+    public static final boolean RUNTIME_WARNINGS_ENABLED = true;
     /**
      * Get {@code Collection} (HashSet) of factors for {@code} num
      * @param num
@@ -77,4 +78,9 @@ public class Utils {
      * @return
      */
     public static long lcm(long a, long b) { return (a * b) / gcd(a, b); }
+
+    public static void printRuntimeWarningIfFalse(boolean expression, String warning)
+    {
+        if (RUNTIME_WARNINGS_ENABLED && !expression) {System.out.println(warning);}
+    }
 }

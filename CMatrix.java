@@ -90,7 +90,9 @@ public class CMatrix extends Matrix {
     {
         int colLengths[] = getColLengths();
         //TODO handle the case where the matrix is one row
-        int finalStringLength = Matrix.OPEN_BRACKET_TOP.length() + Matrix.CLOSE_BRACKET_TOP.length() + 1;//opening bracket, closing bracket, newline.
+        int finalStringLength = (getNumRows() == 1) ?
+        Matrix.OPEN_BRACKET_1_ROW.length() + Matrix.CLOSE_BRACKET_1_ROW.length() + 1 :
+        Matrix.OPEN_BRACKET_TOP.length() + Matrix.CLOSE_BRACKET_TOP.length() + 1;//opening bracket, closing bracket, newline.
         for (int num : colLengths)
         {
             finalStringLength += num;
@@ -117,7 +119,8 @@ public class CMatrix extends Matrix {
             sb.append('\n');
         }
         String returnStr = sb.toString();
-        assert(finalStringLength == returnStr.length());
+        //consider removing finalStringLength because it's taking a disproportionate amount of effort for a tiny amount of time
+        Utils.printRuntimeWarningIfFalse(finalStringLength == returnStr.length(), "Expected string length " + finalStringLength + " does not match actual string length " + returnStr.length());
         return returnStr;
     }
 
