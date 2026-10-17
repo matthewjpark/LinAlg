@@ -81,6 +81,6 @@ public class Utils {
 
     public static void printRuntimeWarningIfFalse(boolean expression, String warning)
     {
-        if (RUNTIME_WARNINGS_ENABLED && !expression) {System.out.println(warning);}
+        if (RUNTIME_WARNINGS_ENABLED && !expression) {System.out.println("Warning:" + warning);}
     }
 }

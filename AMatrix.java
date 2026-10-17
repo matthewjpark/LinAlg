@@ -94,13 +94,74 @@ public class AMatrix extends Matrix {
     }
 
     @Override
-    public void REF() {
+    public boolean REF(RowReduceStrategy strat) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void RREF() {
-        throw new UnsupportedOperationException();
+    public boolean RREF(RowReduceStrategy strat) {
+        switch (strat) {
+            case ANYTHING_GOES:
+                int numLV = 0;//number of leading variables - will update at the end of the loop. This also represents the current row number.
+                for (int c = 0; (c < getNumColsLeft()) && (numLV < getNumRows()); c++)
+                {
+                    //find which row to use as the pivot entry and swap it if necessary
+                    if (left[numLV][c].isZero())//don't use this row
+                    {
+                        //find which row to use based off the three criteria
+                        //for _1RowNum, it uses the first row. For the others, it uses the last row
+                        int _1RowNum = -1;
+                        int intRowNum = -1;
+                        int non0RowNum = -1;
+                        for (int r = (numLV + 1); r < getNumRows(); r++)
+                        {
+                            Fraction curr = left[r][c];
+                            if (curr.isOne()) {
+                                _1RowNum = r;
+                                break;
+                            } else if (!curr.isZero()) {
+                                if (curr.isInt()) {
+                                    intRowNum = r;
+                                } else {
+                                    non0RowNum = r;
+                                }
+                            }
+                        }
+                        //if they're all -1, continue onto the next column without incrementing numLV
+                        if (_1RowNum >= 0) {
+                            swap(numLV, _1RowNum);
+                        } else if (intRowNum >= 0) {
+                            swap(numLV, intRowNum);
+                        } else if (non0RowNum >= 0) {
+                            swap(numLV, non0RowNum);
+                        } else {
+                            continue;
+                        }
+                    }//else, use this row (do nothing)
+
+                    assert(!left[numLV][c].isZero());
+                    if (!left[numLV][c].isOne()) {
+                        //multiply the row so that it's one
+                        Fraction reciprocal = left[numLV][c].reciprocal();
+                        multiplyRow(reciprocal, numLV);
+                    }
+
+                    //make the other entries zero
+                    for (int r = 0; r < getNumRows(); r++)
+                    {
+                        if ((r == c) || (left[r][c].isZero())) {continue;}//if doing a row op here would do nothing, skip it
+                        addRow(r, left[r][c].swapedSign(), numLV);
+                        if (isInconsistent(r)) {
+                            System.out.println("Inconsistent row!");
+                            return true;
+                        }
+                    }
+                    numLV++;
+                }
+                return true;
+            default:
+                return false;
+        }
     }
     //=====String methods=====
     @Override 
@@ -115,7 +176,8 @@ public class AMatrix extends Matrix {
         {
             finalStringLength += num;
         }
-        finalStringLength += getNumCols() - 2;//to account for the space between matrix elements
+        finalStringLength += Math.max(0, getNumColsLeft() - 1);//to account for the space between matrix elements
+        finalStringLength += Math.max(0, right[0].length - 1);
         finalStringLength *= getNumRows();
         StringBuilder sb = new StringBuilder(finalStringLength);
         for (int r = 0; r < getNumRows(); r++)
@@ -169,5 +231,28 @@ public class AMatrix extends Matrix {
             colLengths[col] = fattestCol;
         }
         return colLengths;
+    }
+
+    /**
+     * Returns true if the zero-indexed row number is inconsistent (it is 0 on the left side and nonzero on the right side)
+     * @param rowNum
+     * @return
+     */
+    public boolean isInconsistent(int rowNum)
+    {
+        for (Fraction elem : left[rowNum])
+        {
+            if (!elem.isZero()) {
+                return false;//if any element on the left side is not zero, return false
+            }
+        }
+        //at this point, the left side should be all 0
+        for (Fraction elem : right[rowNum])
+        {
+            if (!elem.isZero()) {
+                return true;//if any elemnt on the right side is not zero, return false
+            }
+        }
+        return false;//at this point, everything is 0, which means it's consistent. Return false.
     }
 }

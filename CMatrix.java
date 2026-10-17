@@ -76,12 +76,12 @@ public class CMatrix extends Matrix {
     }
 
     @Override
-    public void REF() {
+    public boolean REF(RowReduceStrategy strat) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void RREF() {
+    public boolean RREF(RowReduceStrategy strat) {
         throw new UnsupportedOperationException();
     }
     //=====String methods=====

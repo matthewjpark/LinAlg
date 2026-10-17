@@ -9,6 +9,16 @@ for each column:
 strategies:
 - don't change determinant
 - keep as integers
-- do whatever
+- anything goes
 
 don't change determinant:
+
+
+
+anything goes:
+- when searching for which row to make the pivot entry:
+    - first try the next row. If it's 0:
+        - search for a row with 1
+        - search for a row with an int
+        - search for any non-zero row
+        - perform these searches simultaneously

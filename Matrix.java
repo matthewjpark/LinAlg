@@ -16,7 +16,6 @@ public abstract class Matrix {
     public abstract int getNumCols();
     public abstract Fraction[] getRow(int rowNum);
     public abstract Fraction[] getCol(int colNum);
-    //TODO see javadoc behavior
     /**
      * whether row operations that do nothing (eg. swapping the same row) are forbidden
      */
@@ -124,7 +123,7 @@ public abstract class Matrix {
      */
     public final void multiplyRow(Fraction c, int row)
     {
-        if ((c.numer == 0) && STRICT_ROW_OPS) {throw new ArithmeticException("Cannot multiply row by 0");}
+        if ((c.isZero()) && STRICT_ROW_OPS) {throw new ArithmeticException("Cannot multiply row by 0");}
         multR(c, row);
         final String rowStr = getRho(row);//rho and the row # as a string
         StringBuilder rowOp = new StringBuilder(rowStr);
@@ -211,8 +210,13 @@ public abstract class Matrix {
     {
         addRow(dest, new Fraction(c), src);
     }
-    public abstract void REF();
-    public abstract void RREF();
+    /**
+     * 
+     * @param strat
+     * @return whether the strat is supported by this method
+     */
+    public abstract boolean REF(RowReduceStrategy strat);
+    public abstract boolean RREF(RowReduceStrategy strat);
 
 
 
@@ -226,6 +230,7 @@ public abstract class Matrix {
         operation.insert(0, ROW_LOG_OPEN_BRACKET);
         operation.append(ROW_LOG_CLOSE_BRACKET);
         rowOpLog.add(operation.toString());
+        printChanges();
     }
     /**
      * Print the row op log to the console
@@ -249,6 +254,13 @@ public abstract class Matrix {
     public void clearRowOpLog()
     {
         rowOpLog.clear();
+    }
+    /**
+     * Print the most recent row operation and the new matrix
+     */
+    public void printChanges() {
+        System.out.println(getLastRowOp());
+        System.out.println(toString());
     }
 
     //=====character methods=====

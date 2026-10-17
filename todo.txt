@@ -1,3 +1,2 @@
-- manual mode
+- "left matrix" variable, update methods accordingly
 - algorithm
-- feature to disable subscript

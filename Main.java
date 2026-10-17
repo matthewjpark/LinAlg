@@ -105,6 +105,9 @@ public class Main {
             m = new CMatrix(mArr);
         }
     }
+    public static void createAMatrix() {
+        createMatrix(new String[]{"A"});
+    }
     public static void manual() {
         System.out.println("Type \"b\" to go back to the option selector.");
         System.out.println(m.toString());
@@ -117,23 +120,24 @@ public class Main {
                     break;
                 }
                 manipulator.parse(nextLn);
-                System.out.println(m.getLastRowOp());
-                System.out.println(m.toString());
+                // System.out.println(m.getLastRowOp());
+                // System.out.println(m.toString());
             } catch (NumberFormatException | ArithmeticException | /*IllegalStateException |*/ ArrayIndexOutOfBoundsException e) {
                 System.out.println("Couldn't parse your input \"" + e.toString() + "\": " + e.toString());
             }
             
         }
-        m.printRowOpLog();
-        System.out.println(m.toString());
     }
     public static void foo() {
         ;
     }
     public static void modeSelect() {
+        Runnable simpAny = () -> m.RREF(RowReduceStrategy.ANYTHING_GOES);
         Option[] commands = {
+            new Option(Main::createAMatrix, "Create new augmented matrix"),
             new Option(Main::manual, "Perform row operations manually"),
             new Option(Main::foo, "foo"),
+            new Option(simpAny, "Auto-RREF with strategy \"Anything goes\""),
             new Option(null, "Exit the program")//this must be the last option
         };
         while (true) {
@@ -158,6 +162,8 @@ public class Main {
                     continue;
                 }
                 selectedOption.function().run();//run the function associated with the option
+                m.printRowOpLog();//print the final result
+                System.out.println(m.toString());
             }
         }
     }

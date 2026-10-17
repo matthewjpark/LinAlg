@@ -90,6 +90,31 @@ public class Fraction {
         return isInt;
     }
     /**
+     * 
+     * @return true when the fraction is exactly 1
+     */
+    public boolean isOne() {
+        if ((numer == 1) && (denom == 1))
+        {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 
+     * @return true when the fraction is exactly 0
+     */
+    public boolean isZero() {
+        if (numer == 0)
+        {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    /**
      * Self-explanatory. Also works if the fraction is not simplified.
      * @return {@code true} if the fraction is negative, or {@code false} if the fraction is 0 or positive
      */
@@ -345,6 +370,14 @@ public class Fraction {
     public Fraction swapedSign()
     {
         return new Fraction(-numer, denom);
+    }
+    /**
+     * Return the reciprocal of {@code this Fraction}. Doesn't change the value of {@code this}.
+     * @return
+     * @throws ArithmeticException if {@code this} is 0
+     */
+    public Fraction reciprocal() {
+        return new Fraction(denom, numer);
     }
     /**
      * @return A new fraction which is the absolute value of this fraction. Doesn't change the value of this fraction.
