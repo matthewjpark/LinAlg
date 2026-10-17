@@ -149,7 +149,7 @@ public class AMatrix extends Matrix {
                     //make the other entries zero
                     for (int r = 0; r < getNumRows(); r++)
                     {
-                        if ((r == c) || (left[r][c].isZero())) {continue;}//if doing a row op here would do nothing, skip it
+                        if ((r == numLV) || (left[r][c].isZero())) {continue;}//if doing a row op here would do nothing, skip it
                         addRow(r, left[r][c].swapedSign(), numLV);
                         if (isInconsistent(r)) {
                             System.out.println("Inconsistent row!");

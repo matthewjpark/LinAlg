@@ -76,15 +76,14 @@ public class Main {
                     i--;
                     continue;
                 }
-                scnr.nextLine();
             }
+            scnr.nextLine();
             m = new AMatrix(mArrLeft, mArrRight);
         } else if (type == 'C') {
             System.out.println("Enter number of rows: ");
             int numRows = scnr.nextInt();
             System.out.println("Enter number of columns:");
             int numCols = scnr.nextInt();
-            scnr.nextLine();//flush scanner
             Fraction[][] mArr = new Fraction[numRows][numCols];
             for (int i = 0; i < numRows; i++) {
                 System.out.println("Enter contents of row " + (i + 1) + ":");
